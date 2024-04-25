@@ -1,0 +1,516 @@
+Exercise Part A
+use employees
+employees> use temporary
+switched to db temporary
+temporary> db.test.insert({})
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6629c3e31efabd09dfa956a2") }
+}
+temporary> show dbs
+4339       16.00 KiB
+Library    72.00 KiB
+admin      40.00 KiB
+config     96.00 KiB
+local      72.00 KiB
+temporary   8.00 KiB
+temporary> show collections
+test
+temporary>
+temporary> db.dropDatabase()
+{ ok: 1, dropped: 'temporary' }
+temporary> showdbs
+ReferenceError: showdbs is not defined
+temporary> show dbs
+4339      16.00 KiB
+Library   72.00 KiB
+admin     40.00 KiB
+config   108.00 KiB
+local     72.00 KiB
+temporary> show collections
+
+temporary>
+test> use employees
+switched to db employees
+employees> db.createCollection('techdep')
+{ ok: 1 }
+employees> db.createCollection('hrdep')
+{ ok: 1 }
+employees> db.createCollection('finance')
+{ ok: 1 }
+employees>
+employees> show collections
+finance
+hrdep
+techdep
+employees>
+employees> db.techdep.insert({ employeeid: 1, name: "Alice", salary: 60000 })
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6629c68d5224c85aa181cf79") }
+}
+employees> db.hrdep.insert({ employeeid: 2, name: "Bob", salary: 70000 })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6629c68d5224c85aa181cf7a") }
+}
+employees> db.finance.insert({ employeeid: 3, name: "Charlie", salary: 80000 })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6629c68f5224c85aa181cf7b") }
+}
+employees>
+
+employees> db.techdep.find()
+[
+  {
+    _id: ObjectId("6629c68d5224c85aa181cf79"),
+    employeeid: 1,
+    name: 'Alice',
+    salary: 60000
+  }
+]
+employees> db.hrdep.find()
+[
+  {
+    _id: ObjectId("6629c68d5224c85aa181cf7a"),
+    employeeid: 2,
+    name: 'Bob',
+    salary: 70000
+  }
+]
+employees> db.finance.find()
+[
+  {
+    _id: ObjectId("6629c68f5224c85aa181cf7b"),
+    employeeid: 3,
+    name: 'Charlie',
+    salary: 80000
+  }
+]
+employees>
+
+employees> db.hrdep.insert({ employeeid: 2455, name: "Syed", salary: 90000 })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6629c7195224c85aa181cf7d") }
+}
+employees> db.finance.insert({ employeeid: 24113, name: "Wright John", salary: 65000 })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6629c7195224c85aa181cf7e") }
+}
+employees>
+
+employees> db.techdep.insert({ employeeid: 1187, name: "John Steight", salary: 75000 })
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("6629c73f5224c85aa181cf7f") }
+}
+employees> db.techdep.find({ employeeid: { $exists: true } }).limit(2)
+[
+  {
+    _id: ObjectId("6629c68d5224c85aa181cf79"),
+    employeeid: 1,
+    name: 'Alice',
+    salary: 60000
+  },
+  {
+    _id: ObjectId("6629c7195224c85aa181cf7c"),
+    employeeid: 1187,
+    name: 'John Steight',
+    salary: 75000
+  }
+]
+employees> db.hrdep.find({ name: { $exists: true } }).limit(2)
+[
+  {
+    _id: ObjectId("6629c68d5224c85aa181cf7a"),
+    employeeid: 2,
+    name: 'Bob',
+    salary: 70000
+  },
+  {
+    _id: ObjectId("6629c7195224c85aa181cf7d"),
+    employeeid: 2455,
+    name: 'Syed',
+    salary: 90000
+  }
+]
+employees> db.techdep.find({ name: /^John/ })
+[
+  {
+    _id: ObjectId("6629c7195224c85aa181cf7c"),
+    employeeid: 1187,
+    name: 'John Steight',
+    salary: 75000
+  },
+  {
+    _id: ObjectId("6629c73f5224c85aa181cf7f"),
+    employeeid: 1187,
+    name: 'John Steight',
+    salary: 75000
+  }
+]
+employees> db.finance.find({ name: /John/ })
+[
+  {
+    _id: ObjectId("6629c7195224c85aa181cf7e"),
+    employeeid: 24113,
+    name: 'Wright John',
+    salary: 65000
+  }
+]
+
+test> use employees
+switched to db employees
+employees> db.zips.find({ pop: { $lt: 1500 } }, { city: 1 })
+[
+  { _id: '01032', city: 'GOSHEN' },
+  { _id: '01039', city: 'HAYDENVILLE' },
+  { _id: '01053', city: 'LEEDS' },
+  { _id: '01070', city: 'PLAINFIELD' },
+  { _id: '01008', city: 'BLANDFORD' },
+  { _id: '01026', city: 'CUMMINGTON' },
+  { _id: '01012', city: 'CHESTERFIELD' },
+  { _id: '01071', city: 'RUSSELL' },
+  { _id: '01098', city: 'WORTHINGTON' },
+  { _id: '01243', city: 'MIDDLEFIELD' },
+  { _id: '01253', city: 'OTIS' },
+  { _id: '01245', city: 'WEST OTIS' },
+  { _id: '01256', city: 'SAVOY' },
+  { _id: '01258', city: 'SOUTH EGREMONT' },
+  { _id: '01259', city: 'SOUTHFIELD' },
+  { _id: '01266', city: 'WEST STOCKBRIDGE' },
+  { _id: '01270', city: 'WINDSOR' },
+  { _id: '01236', city: 'HOUSATONIC' },
+  { _id: '01255', city: 'SANDISFIELD' },
+  { _id: '01339', city: 'HAWLEY' }
+]
+Type "it" for more
+employees>
+employees> db.zips.find({ city: "CHESTER" })
+[
+  {
+    _id: '01011',
+    city: 'CHESTER',
+    loc: [ -72.988761, 42.279421 ],
+    pop: 1688,
+    state: 'MA'
+  },
+  {
+    _id: '03036',
+    city: 'CHESTER',
+    loc: [ -71.244962, 42.967756 ],
+    pop: 2691,
+    state: 'NH'
+  },
+  {
+    _id: '05143',
+    city: 'CHESTER',
+    loc: [ -72.603125, 43.283124 ],
+    pop: 3449,
+    state: 'VT'
+  },
+  {
+    _id: '06412',
+    city: 'CHESTER',
+    loc: [ -72.464293, 41.404903 ],
+    pop: 3417,
+    state: 'CT'
+  },
+  {
+    _id: '07930',
+    city: 'CHESTER',
+    loc: [ -74.677649, 40.789193 ],
+    pop: 6635,
+    state: 'NJ'
+  },
+  {
+    _id: '10918',
+    city: 'CHESTER',
+    loc: [ -74.265116, 41.355381 ],
+    pop: 9196,
+    state: 'NY'
+  },
+  {
+    _id: '19013',
+    city: 'CHESTER',
+    loc: [ -75.374687, 39.849817 ],
+    pop: 49144,
+    state: 'PA'
+  },
+  {
+    _id: '21619',
+    city: 'CHESTER',
+    loc: [ -76.284183, 38.958296 ],
+    pop: 4199,
+    state: 'MD'
+  },
+  {
+    _id: '23831',
+    city: 'CHESTER',
+    loc: [ -77.41557, 37.342934 ],
+    pop: 24788,
+    state: 'VA'
+  },
+  {
+    _id: '26034',
+    city: 'CHESTER',
+    loc: [ -80.558439, 40.598109 ],
+    pop: 5966,
+    state: 'WV'
+  },
+  {
+    _id: '29706',
+    city: 'CHESTER',
+    loc: [ -81.21856, 34.714897 ],
+    pop: 21920,
+    state: 'SC'
+  },
+  {
+    _id: '31012',
+    city: 'CHESTER',
+    loc: [ -83.174029, 32.398152 ],
+    pop: 1517,
+    state: 'GA'
+  },
+  {
+    _id: '52134',
+    city: 'CHESTER',
+    loc: [ -92.415528, 43.473021 ],
+    pop: 571,
+    state: 'IA'
+  },
+  {
+    _id: '57016',
+    city: 'CHESTER',
+    loc: [ -96.975883, 43.898077 ],
+    pop: 799,
+    state: 'SD'
+  },
+  {
+    _id: '59522',
+    city: 'CHESTER',
+    loc: [ -110.97982, 48.454125 ],
+    pop: 1530,
+    state: 'MT'
+  },
+  {
+    _id: '62233',
+    city: 'CHESTER',
+    loc: [ -89.821807, 37.918822 ],
+    pop: 9436,
+    state: 'IL'
+  },
+  {
+    _id: '68327',
+    city: 'CHESTER',
+    loc: [ -97.61969, 40.028954 ],
+    pop: 527,
+    state: 'NE'
+  },
+  {
+    _id: '72934',
+    city: 'CHESTER',
+    loc: [ -94.202026, 35.689776 ],
+    pop: 1004,
+    state: 'AR'
+  },
+  {
+    _id: '73838',
+    city: 'CHESTER',
+    loc: [ -98.884078, 36.252841 ],
+    pop: 561,
+    state: 'OK'
+  },
+  {
+    _id: '75936',
+    city: 'CHESTER',
+    loc: [ -94.458099, 30.928532 ],
+    pop: 1588,
+    state: 'TX'
+  }
+]
+Type "it" for more
+employees>
+employees> db.zips.find({ loc: [-84.38570799999999, 45.015207] })
+[
+  {
+    _id: '49751',
+    city: 'JOHANNESBURG',
+    loc: [ -84.385708, 45.015207 ],
+    pop: 2062,
+    state: 'MI'
+  }
+]
+employees>
+employees> db.zips.find({ $or: [{ city: "WARREN" }, { loc: [-80.76424299999999, 41.231819] }] })
+[
+  {
+    _id: '02885',
+    city: 'WARREN',
+    loc: [ -71.270165, 41.725618 ],
+    pop: 11385,
+    state: 'RI'
+  },
+  {
+    _id: '03279',
+    city: 'WARREN',
+    loc: [ -71.89013, 43.944667 ],
+    pop: 886,
+    state: 'NH'
+  },
+  {
+    _id: '04864',
+    city: 'WARREN',
+    loc: [ -69.247894, 44.127066 ],
+    pop: 2816,
+    state: 'ME'
+  },
+  {
+    _id: '06754',
+    city: 'WARREN',
+    loc: [ -73.367472, 41.770084 ],
+    pop: 1278,
+    state: 'CT'
+  },
+  {
+    _id: '07059',
+    city: 'WARREN',
+    loc: [ -74.510456, 40.631787 ],
+    pop: 10867,
+    state: 'NJ'
+  },
+  {
+    _id: '44483',
+    city: 'WARREN',
+    loc: [ -80.816448, 41.263878 ],
+    pop: 30257,
+    state: 'OH'
+  },
+  {
+    _id: '44481',
+    city: 'WARREN',
+    loc: [ -80.871806, 41.172426 ],
+    pop: 5407,
+    state: 'OH'
+  },
+  {
+    _id: '44484',
+    city: 'WARREN',
+    loc: [ -80.764243, 41.231819 ],
+    pop: 25898,
+    state: 'OH'
+  },
+  {
+    _id: '44485',
+    city: 'WARREN',
+    loc: [ -80.844136, 41.240511 ],
+    pop: 24847,
+    state: 'OH'
+  },
+  {
+    _id: '46792',
+    city: 'WARREN',
+    loc: [ -85.418337, 40.688646 ],
+    pop: 2404,
+    state: 'IN'
+  },
+  {
+    _id: '48089',
+    city: 'WARREN',
+    loc: [ -82.997385, 42.468494 ],
+    pop: 35861,
+    state: 'MI'
+  },
+  {
+    _id: '48091',
+    city: 'WARREN',
+    loc: [ -83.059263, 42.466463 ],
+    pop: 33165,
+    state: 'MI'
+  },
+  {
+    _id: '48092',
+    city: 'WARREN',
+    loc: [ -83.064278, 42.512459 ],
+    pop: 25781,
+    state: 'MI'
+  },
+  {
+    _id: '48093',
+    city: 'WARREN',
+    loc: [ -82.996764, 42.514943 ],
+    pop: 50327,
+    state: 'MI'
+  },
+  {
+    _id: '61087',
+    city: 'WARREN',
+    loc: [ -89.985992, 42.489001 ],
+    pop: 1967,
+    state: 'IL'
+  },
+  {
+    _id: '71671',
+    city: 'WARREN',
+    loc: [ -92.077824, 33.613983 ],
+    pop: 8828,
+    state: 'AR'
+  },
+  {
+    _id: '77664',
+    city: 'WARREN',
+    loc: [ -94.411974, 30.597776 ],
+    pop: 2465,
+    state: 'TX'
+  },
+  {
+    _id: '97053',
+    city: 'WARREN',
+    loc: [ -122.863445, 45.826043 ],
+    pop: 2378,
+    state: 'OR'
+  }
+]
+employees>
+employees> db.hrdep.find({ $where: "this.salary > 75000" })
+[
+  {
+    _id: ObjectId('6629c7195224c85aa181cf7d'),
+    employeeid: 2455,
+    name: 'Syed',
+    salary: 90000
+  },
+  {
+    _id: ObjectId('6629dbf9318aece9c046b79d'),
+    employeeid: 2455,
+    name: 'Syed',
+    salary: 90000
+  }
+]
+employees> db.finance.find({ $where: "/John/.test(this.name)" })
+[
+  {
+    _id: ObjectId('6629c7195224c85aa181cf7e'),
+    employeeid: 24113,
+    name: 'Wright John',
+    salary: 65000
+  },
+  {
+    _id: ObjectId('6629dbf9318aece9c046b79e'),
+    employeeid: 24113,
+    name: 'Wright John',
+    salary: 65000
+  }
+]
+employees> db.hrdep.find({}, { name: 1, salary: 1, _id: 0 })
+[
+  { name: 'Bob', salary: 70000 },
+  { name: 'Syed', salary: 90000 },
+  { name: 'Bob', salary: 70000 },
+  { name: 'Syed', salary: 90000 }
+]
